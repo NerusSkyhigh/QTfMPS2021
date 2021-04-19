@@ -1,5 +1,4 @@
 /*SE solver with the 'IMPLICIT METHOS' - Diego Andreoni 2021*/
-
 #include <iostream>
 #include <Eigen/Eigenvalues>
 #include <Eigen/Core>
@@ -10,12 +9,11 @@
 #include <string>
 #include <iomanip>
 
-
-
 using namespace std;
 using namespace Eigen;
 
-int main(){
+int main()
+{
 	//Paramters of the problem
 	int N=1400; //Number of points of the mesh
 	double rmin=0.000001, rmax=5; //Interval
@@ -58,24 +56,24 @@ int main(){
 	H.setZero();
 	H=-0.5*InvB*A+V;
 
-//------>RESULTS:
-/*Nota, dato che eigen mette a caso gli autovalori, fino a che non faccio il Bubble sort per ordinarli, devo selezionare gli stato a mano*/
+	//------>RESULTS:
+	/*Nota, dato che eigen mette a caso gli autovalori, fino a che non faccio il Bubble sort per ordinarli, devo selezionare gli stato a mano*/
 	//Stampiamo autovalori della matrice
 	SelfAdjointEigenSolver <MatrixXd> es(H);
 
-//----->BUBBLE SORT VETTORE AUTOVALORI (che la libreria Eigen non restituisce in ordine)
+	//----->BUBBLE SORT VETTORE AUTOVALORI (che la libreria Eigen non restituisce in ordine)
 	double eigenval[N];
 
 	//Generiamo un vettore che per elementi gli autovalori senza ordine
 	for(int i=0; i<N; i++){
-//		eigenval[i]=es.eigenvalues().real()[i];
+		//		eigenval[i]=es.eigenvalues().real()[i];
 		eigenval[i]=es.eigenvalues()[i];
-//		cout<<eigenval[i]<<" "<<es.eigenvalues().real()[i]<<endl;
+		//		cout<<eigenval[i]<<" "<<es.eigenvalues().real()[i]<<endl;
 	}
 
-//	cout<<"Autovlori e autovettori prima di essere riordinati con la libreria canonica"<<endl;
-//	cout<<es.eigenvectors().real()<<endl<<endl;
-//	cout<<es.eigenvalues().real()<<endl;
+	//	cout<<"Autovlori e autovettori prima di essere riordinati con la libreria canonica"<<endl;
+	//	cout<<es.eigenvectors().real()<<endl<<endl;
+	//	cout<<es.eigenvalues().real()<<endl;
 	//Ordiniamolo con l'algoritmo BubbleSort
 	//Nota che per ogni autovalore riordinato bisogna anche riordinare la colonna che contiene l'autovettore
 	double temp=0;
@@ -86,19 +84,19 @@ int main(){
 	//Generiamo la matrice che ha per ogni colonna un autovettore
 	for(int i=0; i<N; i++){
 		for(int j=0; j<N; j++){
-//		Mat_eigenvec[j][i]=es.eigenvectors().col(i)[j].real();
-		Mat_eigenvec[j][i]=es.eigenvectors().col(i)[j];
+			//		Mat_eigenvec[j][i]=es.eigenvectors().col(i)[j].real();
+			Mat_eigenvec[j][i]=es.eigenvectors().col(i)[j];
 		}
 	}
 
 	//Printiamo la matrice per vedere se coincide con gli autovettori stampati
-//	cout<<"La matrice Mat_eigenvec"<<endl<<endl;
-//	for(int i=0; i<N; i++){
-//		for(int j=0; j<N; j++){
-//		cout<<Mat_eigenvec[i][j]<<" ";
-//		}
-//		cout<<endl;
-//	}
+	//	cout<<"La matrice Mat_eigenvec"<<endl<<endl;
+	//	for(int i=0; i<N; i++){
+	//		for(int j=0; j<N; j++){
+	//		cout<<Mat_eigenvec[i][j]<<" ";
+	//		}
+	//		cout<<endl;
+	//	}
 
 	while(j==1){
 		j=0;
@@ -191,4 +189,3 @@ for(int n=0; n<No; n++){
 	}
 	return 0;
 }
-
