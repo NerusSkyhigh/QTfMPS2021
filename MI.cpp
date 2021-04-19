@@ -17,8 +17,8 @@ using namespace Eigen;
 
 int main(){
 	//Paramters of the problem
-	int N=1000; //Number of points of the mesh
-	double rmin=-5, rmax=5; //Interval
+	int N=1400; //Number of points of the mesh
+	double rmin=0.000001, rmax=5; //Interval
 	double h; //Distance between the poin of the mesh
 
 	h=(rmax-rmin)/N;
@@ -50,7 +50,7 @@ int main(){
 	MatrixXd V(N,N);
 	V.setZero();
 	for(int i=0; i<N; i++){
-		double p=0;
+		double p=-(rmin+h*i);	//Potenziale di Coulomb
 		V(i,i)=p;
 	}
 	//Matrix of the Hamiltonian
@@ -67,9 +67,6 @@ int main(){
 	double eigenval[N];
 
 	//Generiamo un vettore che per elementi gli autovalori senza ordine
-	ofstream E;
-	E<<es.eigenvalues();
-
 	for(int i=0; i<N; i++){
 //		eigenval[i]=es.eigenvalues().real()[i];
 		eigenval[i]=es.eigenvalues()[i];
@@ -133,9 +130,16 @@ int main(){
 //		}
 //		cout<<endl;
 //	}
+//----->CREA DOCUMENTO CON GLI AUTOVALORI ORDINATI
+
+	ofstream E("Autovalori");
+	for(int i=0; i<N; i++){
+		E<<eigenval[i]<<endl;
+		E.close();
+	}
 
 //----->NORMALIZZA LE FUNZIONI D'ONDA
-	//Normalizza la funzione d'onda 
+	//Normalizza la funzione d'onda
 	double S=0; //Costante di normalizzazione
 	double v[N];
 
@@ -179,7 +183,7 @@ for(int n=0; n<No; n++){
 
 		//.txt contenente la funzione d'onda normalizzata
 		ofstream normgs(tot);
-		normgs<<"#Autovalore"<<n<<endl<<endl;
+		normgs<<"#Autovalore No"<<n<<"E"<<No<<"="<<eigenval[n]<<endl<<endl;
 		for(int i=0; i<N; i++){
 			normgs<<rmin+i*h<<"\t"<<v[i]+eigenval[n]<<endl;
 		}
