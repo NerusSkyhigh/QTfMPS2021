@@ -16,7 +16,7 @@ int main()
 {
 	//Paramters of the problem
 	int N=1400; //Number of points of the mesh
-	double rmin=0.000001, rmax=5; //Interval
+	double rmin=0.03, rmax=5; //Interval
 	double h; //Distance between the poin of the mesh
 
 	h=(rmax-rmin)/N;
